@@ -5,8 +5,16 @@ import 'package:social/colors.dart';
 class Textbox extends StatefulWidget {
   final String hinttext;
   final IconData textboxicon;
+  final TextEditingController controller;
+  //final TextInputType keyboardType; // TODO: Add keyboardType to Textbox
 
-  const Textbox({required this.hinttext, required this.textboxicon});
+  // const
+  const Textbox({
+    required this.hinttext,
+    required this.textboxicon,
+    required this.controller,
+    //this.keyboardType = TextInputType.text,
+  });
 
   @override
   _TextboxState createState() => _TextboxState();
@@ -18,6 +26,7 @@ class _TextboxState extends State<Textbox> {
     return Column(
       children: [
         TextField(
+          controller: widget.controller,
           decoration: InputDecoration(
             prefixIcon: Icon(widget.textboxicon),
             hintText: widget.hinttext,
