@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social/screens/auth/signup.dart';
+import 'package:social/screens/layout.dart';
 import 'package:social/services/auth.dart';
 import 'package:social/widgets/signin_signUp.dart';
 
@@ -22,6 +23,15 @@ class _LoginState extends State<Login> {
       email: usernameController.text,
       password: passwordController.text,
     );
+    if (res == 'correct') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => layOutPage(),
+          ));
+    } else {
+      print(res);
+    }
   }
 
   @override
