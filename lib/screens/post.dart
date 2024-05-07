@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:social/colors.dart';
+import 'package:social/services/cloud.dart';
 import 'package:social/util/picker.dart';
 
 class AddPage extends StatefulWidget {
@@ -14,6 +15,20 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   Uint8List? file;
+  TextEditingController descriptioncon = TextEditingController();
+  uploadPost() async {
+    try {
+      String res = await cloudMethods().uploadPost(
+        description: descriptioncon.text,
+        uid: 'KQLaJIq6GPU6ZqvozB5pxMCezD23',
+        postId: '',
+        username: 'fleet',
+        file: file!,
+        displayName: 'omar',
+      );
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +38,9 @@ class _AddPageState extends State<AddPage> {
           title: Text('Add Post'),
           actions: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                uploadPost();
+              },
               child: Text('Post'),
             ),
           ],
@@ -32,7 +49,7 @@ class _AddPageState extends State<AddPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Row(
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
@@ -41,6 +58,7 @@ class _AddPageState extends State<AddPage> {
                   Gap(30),
                   Expanded(
                     child: TextField(
+                      controller: descriptioncon,
                       maxLines: 5,
                       decoration: InputDecoration(
                         border: InputBorder.none,

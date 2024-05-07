@@ -16,6 +16,8 @@ class SocialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme:
+          ThemeData(appBarTheme: AppBarTheme(surfaceTintColor: Colors.white)),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

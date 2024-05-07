@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social/models/post.dart';
+import 'package:social/services/Storge.dart';
 import 'package:uuid/uuid.dart';
 
 class cloudMethods {
@@ -13,13 +16,15 @@ class cloudMethods {
     required String postId,
     String? profilePicture,
     required String username,
-    required String postimage,
+    required Uint8List file,
     required String displayName,
-  }) {
+  }) async {
     // we need to bring the model so we can fill the info and send them to the firebase
     String res = 'some Error';
     try {
       String postId = Uuid().v1(); // it will create a uniqe user id ,
+      String postimage =
+          await StorageMethods().uploadImage(file); // get the url for the image
       PostModel postmodel = PostModel(
         uid: uid,
         displayName: displayName,

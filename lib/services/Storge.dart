@@ -19,5 +19,6 @@ class StorageMethods {
     // now we need to create something to convert to link so we can store the data on firestore ,
     TaskSnapshot snapshot = await uploadTask;
     String url = await snapshot.ref.getDownloadURL();
+    return url;
   }
 }
