@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:social/colors.dart';
+import 'package:social/widgets/post_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,93 +46,26 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(onPressed: () {}, icon: Icon(Icons.message_outlined))
         ],
       ),
-      body: FutureBuilder(
-        future: posts.get(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+      body: StreamBuilder(
+        stream: posts.snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(
-              child: Text('error'),
+              child: Text('Error: ${snapshot.error}'),
             );
           }
-          if (snapshot.connectionState == ConnectionState.done) {
-            dynamic data = snapshot.data! as dynamic; //var from firebase
-            return ListView.builder(
-              itemCount: data.docs.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: kwhitecolor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/icon.png'),
-                            ),
-                            Gap(10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('name'),
-                                Text('username'),
-                              ],
-                            ),
-                            Spacer(),
-                            Text('demo date')
-                          ],
-                        ),
-                        Row(children: [
-                          Expanded(
-                            child: Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/icon.png'),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                data.docs[index]['description'],
-                                maxLines: 3,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.favorite_outline),
-                            ),
-                            Text('0'),
-                            Gap(20),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.comment),
-                            ),
-                            Text('0'),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(),
+
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              return HomeCard(doc: snapshot.data!.docs[index]);
+            },
           );
         },
       ),
