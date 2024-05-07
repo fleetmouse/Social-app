@@ -16,6 +16,7 @@ class SocialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme:
           ThemeData(appBarTheme: AppBarTheme(surfaceTintColor: Colors.white)),
       home: StreamBuilder<User?>(
